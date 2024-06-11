@@ -1,20 +1,21 @@
-# Use the official Node.js 18 image.
+# Use the official Node.js 18 image based on Alpine Linux.
 # https://hub.docker.com/_/node
-FROM node:alpine
+FROM node:18-alpine
 
-# Create and change to the app directory.
+# Set the working directory inside the container.
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
-# If you're using npm workspaces or other setups, you might need to adjust this.
+# Copy package.json and package-lock.json (if available) to the working directory.
 COPY package*.json ./
 
-# Install all dependencies, including development ones.
+# Install dependencies, including development ones.
 RUN npm install
 
-# Copy local code to the container image.
+# Copy the rest of the application code to the working directory.
 COPY . .
 
+# Expose the application port.
 EXPOSE 3000
-# The command to run your application in development mode.
-CMD [ "npm", "run", "dev" ]
+
+# Command to run the application in development mode.
+CMD ["npm", "run", "dev"]
