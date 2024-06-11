@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app-deployment
+  labels:
+    app: nodejs-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+      - name: nodejs-app-container
+        image: muhammadhur/tutorial:latest  # This will be updated by Jenkins
+        ports:
+        - containerPort: 3002
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-app-service
+spec:
+  type: NodePort
+  ports:
+    - port: 3002
+      targetPort: 3002
+      nodePort: 30002
+  selector:
+    app: nodejs-app
